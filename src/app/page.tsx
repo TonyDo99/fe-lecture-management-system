@@ -2,26 +2,29 @@
 import Course from "@/components/course";
 import { ICourses } from "@/types";
 import { GeistSans } from "geist/font/sans";
-import { Layout, Space, Typography } from "antd";
+import { Typography } from "antd";
 import { GeistMono } from "geist/font/mono";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import api from "@/utils/api";
+import { useAuthStore } from "@/store/auth";
 
 const { Title } = Typography;
 
 export default function Home() {
   const [courses, setCourses] = useState<ICourses[]>([]);
   const router = useRouter();
+  const { user } = useAuthStore();
 
   const fetchCourses = async () => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_SEVER}/lecture` || "",
+      const response = await api.get(
+        `${process.env.NEXT_PUBLIC_URL_SEVER}/lecture`,
       );
-      const data = await response.json();
-      setCourses(data);
+      setCourses(response.data);
     } catch (error) {
+      router.push("/signin");
       console.error("Error fetching courses:", error);
     }
   };
@@ -33,6 +36,8 @@ export default function Home() {
       console.error("Error fetching courses:", error);
     }
   };
+
+  console.log("User information:", user);
 
   useEffect(() => {
     fetchCourses();
@@ -54,9 +59,9 @@ export default function Home() {
             </a>
           </div>
           <div className="flex gap-4 lg:ml-auto">
-            <Link href="/sign-in">
+            <Link href="/signin">
               <button className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2">
-                Login / Signup
+                Signup
               </button>
             </Link>
           </div>
