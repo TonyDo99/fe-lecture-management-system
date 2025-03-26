@@ -20,7 +20,7 @@ const forms: {
   [key: string]: (type: "create" | "update", data?: any) => JSX.Element;
 } = {
   teacher: (type, data) => <TeacherForm type={type} data={data} />,
-  student: (type, data) => <StudentForm type={type} data={data} />
+  student: (type, data) => <StudentForm type={type} data={data} />,
 };
 
 const FormModal = ({
@@ -51,25 +51,49 @@ const FormModal = ({
     type === "create"
       ? "bg-lamaYellow"
       : type === "update"
-      ? "bg-lamaSky"
-      : "bg-lamaPurple";
+        ? "bg-lamaSky"
+        : "bg-lamaPurple";
 
   const [open, setOpen] = useState(false);
 
   const Form = () => {
+    const handleDelete = (e: React.FormEvent) => {
+      e.preventDefault();
+      // Implement deletion logic here
+      console.log(`Deleting ${table} with id ${id}`);
+      // Close modal after successful deletion
+      setOpen(false);
+    };
+
     return type === "delete" && id ? (
       <form action="" className="p-4 flex flex-col gap-4">
         <span className="text-center font-medium">
           All data will be lost. Are you sure you want to delete this {table}?
         </span>
-        <button className="bg-red-700 text-white py-2 px-4 rounded-md border-none w-max self-center">
-          Delete
-        </button>
+        <div className="flex justify-center gap-4">
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            className="bg-gray-300 text-gray-800 py-2 px-4 rounded-md border-none"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="bg-red-700 text-white py-2 px-4 rounded-md border-none"
+          >
+            Delete
+          </button>
+        </div>
       </form>
     ) : type === "create" || type === "update" ? (
-      forms[table](type, data)
+      forms[table] ? (
+        forms[table](type, data)
+      ) : (
+        <div>Form for {table} not yet implemented</div>
+      )
     ) : (
-      "Form not found!"
+      <div className="p-4 text-center text-red-500">Form not found!</div>
     );
   };
 

@@ -20,7 +20,7 @@ export default function Home() {
   const fetchCourses = async () => {
     try {
       const response = await api.get(
-        `${process.env.NEXT_PUBLIC_URL_SEVER}/lecture`,
+        `${process.env.NEXT_PUBLIC_URL_SERVER}/lecture`,
       );
       setCourses(response.data);
     } catch (error) {
@@ -36,8 +36,6 @@ export default function Home() {
       console.error("Error fetching courses:", error);
     }
   };
-
-  console.log("User information:", user);
 
   useEffect(() => {
     fetchCourses();
