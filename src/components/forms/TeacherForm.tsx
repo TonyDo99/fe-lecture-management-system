@@ -54,11 +54,18 @@ const TeacherForm = ({
       </span>
       <div className="flex justify-between flex-wrap gap-4">
         <InputField
-          label="Username"
-          name="username"
-          defaultValue={data?.username}
-          register={register}
-          error={errors?.username}
+          label="Birthday"
+          name="birthday"
+          defaultValue={
+            data?.birthday instanceof Date
+              ? data.birthday.toISOString().split("T")[0]
+              : data?.birthday
+          }
+          register={register("birthday", {
+            setValueAs: (value) => (value ? new Date(value) : undefined),
+          })}
+          error={errors.birthday}
+          type="date"
         />
         <InputField
           label="Email"

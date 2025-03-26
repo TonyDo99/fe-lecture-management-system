@@ -1,3 +1,4 @@
+"use client";
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
@@ -5,6 +6,7 @@ import TableSearch from "@/components/TableSearch";
 import { role, studentsData } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 type Student = {
   id: number;
@@ -50,6 +52,17 @@ const columns = [
 ];
 
 const StudentListPage = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = studentsData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
   const renderRow = (item: Student) => (
     <tr
       key={item.id}
@@ -70,8 +83,8 @@ const StudentListPage = () => {
       </td>
       <td className="hidden md:table-cell">{item.studentId}</td>
       <td className="hidden md:table-cell">{item.grade}</td>
-      <td className="hidden md:table-cell">{item.phone}</td>
-      <td className="hidden md:table-cell">{item.address}</td>
+      <td className="hidden lg:table-cell">{item.phone}</td>
+      <td className="hidden lg:table-cell">{item.address}</td>
       <td>
         <div className="flex items-center gap-2">
           <Link href={`/list/teachers/${item.id}`}>
@@ -83,7 +96,7 @@ const StudentListPage = () => {
             // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaPurple">
             //   <Image src="/delete.png" alt="" width={16} height={16} />
             // </button>
-            <FormModal table="student" type="delete" id={item.id}/>
+            <FormModal table="student" type="delete" id={item.id} />
           )}
         </div>
       </td>
@@ -108,15 +121,19 @@ const StudentListPage = () => {
               // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
               //   <Image src="/plus.png" alt="" width={14} height={14} />
               // </button>
-              <FormModal table="student" type="create"/>
+              <FormModal table="student" type="create" />
             )}
           </div>
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={studentsData} />
+      <Table columns={columns} renderRow={renderRow} data={currentItems} />
       {/* PAGINATION */}
-      <Pagination />
+      <Pagination
+        currentPage={currentPage}
+        totalPages={Math.ceil(studentsData.length / itemsPerPage)}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 };

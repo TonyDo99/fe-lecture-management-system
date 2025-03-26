@@ -26,10 +26,10 @@ const Navbar = ({ userInfo }: { userInfo: IUser | null }) => {
         </div>
         <div className="flex flex-col">
           <span className="text-xs leading-3 font-medium text-black">
-            {userInfo?.name}
+            {userInfo?.name || "Guest"}
           </span>
           <span className="text-[10px] text-gray-500 text-right">
-            {userInfo?.role}
+            {userInfo?.role || "Not log in"}
           </span>
         </div>
         <Image

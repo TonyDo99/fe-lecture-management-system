@@ -6,17 +6,16 @@ import {
   Flex,
   Form,
   Input,
+  message,
   Row,
   theme,
-  message,
   Typography,
 } from "antd";
-// import { Logo } from "../../components";
-import { useMediaQuery } from "react-responsive";
-// import { PATH_AUTH, PATH_DASHBOARD } from "../../constants";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
+import { useAuthStore } from "../../store/auth";
 
 const { Title, Text, Link } = Typography;
 
@@ -24,6 +23,12 @@ type FieldType = {
   email?: string;
   password?: string;
   remember?: boolean;
+};
+
+const initalFieldValue: FieldType = {
+  email: "",
+  password: "",
+  remember: false,
 };
 
 export default function SignInPage() {
@@ -34,24 +39,24 @@ export default function SignInPage() {
   const router = useRouter();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const { setAuth, user } = useAuthStore();
 
   const onFinish = (values: FieldType) => {
     setLoading(true);
     axios
-      .post(`${process.env.NEXT_PUBLIC_URL_SEVER}/user/login`, {
+      .post(`${process.env.NEXT_PUBLIC_URL_SERVER}/user/login`, {
         email: values.email,
         password: values.password,
       })
       .then((response) => {
-        console.log("Response", response);
         if (response.status === 200) {
           message.open({
             type: "success",
             content: "Login successful",
           });
 
+          setAuth(response.data.token);
           setLoading(false);
-          router.push("/");
         }
       });
   };
@@ -59,6 +64,14 @@ export default function SignInPage() {
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
+
+  useEffect(() => {
+    if (user?.role === "admin") {
+      router.push("/list/lessons");
+    } else if (user?.role === "user") {
+      router.push("/");
+    }
+  }, [router, user]);
 
   return (
     <Row style={{ minHeight: isMobile ? "auto" : "100vh", overflow: "hidden" }}>
@@ -86,7 +99,7 @@ export default function SignInPage() {
           </Text>
         </Flex>
       </Col>
-      <Col className="bg-color-primary" xs={24} lg={12}>
+      <Col className="bg-white" xs={24} lg={12}>
         <Flex
           vertical
           align={isMobile ? "center" : "flex-start"}
@@ -105,11 +118,7 @@ export default function SignInPage() {
             layout="vertical"
             labelCol={{ span: 24 }}
             wrapperCol={{ span: 24 }}
-            initialValues={{
-              email: "demo@email.com",
-              password: "demo123",
-              remember: true,
-            }}
+            initialValues={initalFieldValue}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
