@@ -2,16 +2,16 @@
 import Image from "next/image";
 import { Button, Card, Flex, Tooltip, Typography } from "antd";
 import { PlayCircleTwoTone } from "@ant-design/icons";
-import { ICourses } from "@/types";
+import { ILecture } from "@/types";
 
 const { Meta } = Card;
 
-export interface ICourseProps {
-  course: ICourses;
+export interface ILectureProps {
+  lecture: ILecture;
   onNavigate: (lectureId: string) => void;
 }
 
-const Course: React.FC<ICourseProps> = ({ course, onNavigate }) => (
+const Lecture: React.FC<ILectureProps> = ({ lecture, onNavigate }) => (
   <Card
     hoverable
     style={{
@@ -30,13 +30,13 @@ const Course: React.FC<ICourseProps> = ({ course, onNavigate }) => (
       <Tooltip title="Play" key="Play video">
         <PlayCircleTwoTone
           style={{ fontSize: 23 }}
-          onClick={() => onNavigate(course._id)}
+          onClick={() => onNavigate(lecture._id)}
         />
       </Tooltip>,
     ]}
   >
-    <Meta title={course.title} description={course.description} />
+    <Meta title={lecture.title} description={lecture.description} />
   </Card>
 );
 
-export default Course;
+export default Lecture;

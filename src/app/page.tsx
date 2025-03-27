@@ -1,28 +1,24 @@
 "use client";
-import Course from "@/components/course";
-import { ICourses } from "@/types";
+import Lecture from "@/components/Lecture";
 import { GeistSans } from "geist/font/sans";
 import { Typography } from "antd";
 import { GeistMono } from "geist/font/mono";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import api from "@/utils/api";
-import { useAuthStore } from "@/store/auth";
+import { apiGetLecture } from "@/utils/api";
+import { ILecture } from "@/types";
 
 const { Title } = Typography;
 
 export default function Home() {
-  const [courses, setCourses] = useState<ICourses[]>([]);
+  const [lectures, setLectures] = useState<ILecture[]>([]);
   const router = useRouter();
-  const { user } = useAuthStore();
 
-  const fetchCourses = async () => {
+  const fetchLectures = async () => {
     try {
-      const response = await api.get(
-        `${process.env.NEXT_PUBLIC_URL_SERVER}/lecture`,
-      );
-      setCourses(response.data);
+      const { data } = await apiGetLecture();
+      setLectures(data);
     } catch (error) {
       router.push("/signin");
       console.error("Error fetching courses:", error);
@@ -38,7 +34,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetchCourses();
+    fetchLectures();
   }, []);
 
   return (
@@ -68,10 +64,10 @@ export default function Home() {
 
       <div className="mt-20">
         <Title level={2}>Your lectures</Title>
-        {courses.map((course: ICourses) => (
-          <Course
-            key={course._id}
-            course={course}
+        {lectures.map((lecture: ILecture) => (
+          <Lecture
+            key={lecture._id}
+            lecture={lecture}
             onNavigate={handleCardInfo}
           />
         ))}

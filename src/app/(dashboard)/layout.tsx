@@ -13,7 +13,10 @@ export default function DashboardLayout({
   const { user, setAuth } = useAuthStore();
 
   const handleSignOut = (url: string) => {
-    url.includes("signin") && setAuth(null);
+    if (url.includes("signin")) {
+      localStorage.clear();
+      setAuth(null);
+    }
   };
 
   return (

@@ -16,7 +16,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useAuthStore } from "../../store/auth";
-import { setCookie } from "@/utils/cookie";
 
 const { Title, Text, Link } = Typography;
 
@@ -56,6 +55,7 @@ export default function SignInPage() {
             content: "Login successful",
           });
 
+          localStorage.setItem("token", response.data.token);
           setAuth(response.data.token);
           setLoading(false);
         }

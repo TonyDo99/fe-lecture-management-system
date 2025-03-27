@@ -3,10 +3,18 @@ export interface AbstractProperties {
   updatedAt: Date;
 }
 
-export interface ICourses extends AbstractProperties {
+export interface ILecture extends AbstractProperties {
   _id: string;
   title: string;
   author: string;
   description: string;
   destication: string;
+}
+
+export interface IUser extends AbstractProperties {
+  _id: string;
+  photo: string;
+  email: string;
+  name: string;
+  role: "user" | "admin";
 }
