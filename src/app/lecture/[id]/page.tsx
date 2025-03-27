@@ -11,7 +11,10 @@ export default function LecturePage() {
   return (
     <div className="h-screen grid place-items-center">
       <ReactPlayer
+        muted={false}
+        playing={true}
         controls
+        volume={1}
         url={`${process.env.NEXT_PUBLIC_S3_LECTURE_URL}/${params.id}.mp4`}
       />
     </div>

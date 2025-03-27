@@ -1,12 +1,6 @@
+import { IUser } from "@/types";
 import { jwtDecode } from "jwt-decode";
 import { create } from "zustand";
-
-export interface IUser {
-  id: string;
-  name: string;
-  email: string;
-  role: "user" | "admin";
-}
 
 interface AuthState {
   token: string | null;
@@ -15,9 +9,22 @@ interface AuthState {
   logout: () => void;
 }
 
+// Get the initial value from localStorage with a helper function
+const getInitialAuthState = () => {
+  const token = localStorage.getItem("token");
+  if (!token) return { token: null, user: null };
+  try {
+    const user = jwtDecode<IUser>(token);
+    return { token, user };
+  } catch {
+    localStorage.removeItem("token");
+    return { token: null, user: null };
+  }
+};
+
 export const useAuthStore = create<AuthState>((set) => ({
-  token: null,
-  user: null,
+  token: getInitialAuthState().token,
+  user: getInitialAuthState().user,
   setAuth: (token) => {
     if (token) {
       set({ token, user: jwtDecode<IUser>(token) });

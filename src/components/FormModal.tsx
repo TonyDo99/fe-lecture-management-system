@@ -1,15 +1,12 @@
 "use client";
 
+import { apiDeleteLecture, apiDeleteUser } from "@/utils/api";
+import { message } from "antd";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useState } from "react";
 
-// USE LAZY LOADING
-
-// import TeacherForm from "./forms/TeacherForm";
-// import StudentForm from "./forms/StudentForm";
-
-const TeacherForm = dynamic(() => import("./forms/TeacherForm"), {
+const LectureForm = dynamic(() => import("./forms/LectureForm"), {
   loading: () => <h1>Loading...</h1>,
 });
 const StudentForm = dynamic(() => import("./forms/StudentForm"), {
@@ -17,34 +14,31 @@ const StudentForm = dynamic(() => import("./forms/StudentForm"), {
 });
 
 const forms: {
-  [key: string]: (type: "create" | "update", data?: any) => JSX.Element;
+  [key: string]: (
+    type: "create" | "update",
+    data: any,
+    open: boolean,
+    setOpen: (open: boolean) => void,
+  ) => JSX.Element;
 } = {
-  teacher: (type, data) => <TeacherForm type={type} data={data} />,
-  student: (type, data) => <StudentForm type={type} data={data} />,
+  lecture: (type, data, open, setOpen) => (
+    <LectureForm type={type} data={data} open={open} setOpen={setOpen} />
+  ),
+  user: (type, data, open, setOpen) => (
+    <StudentForm type={type} data={data} open={open} setOpen={setOpen} />
+  ),
 };
 
 const FormModal = ({
   table,
   type,
   data,
-  id,
+  id = "",
 }: {
-  table:
-    | "teacher"
-    | "student"
-    | "parent"
-    | "subject"
-    | "class"
-    | "lesson"
-    | "exam"
-    | "assignment"
-    | "result"
-    | "attendance"
-    | "event"
-    | "announcement";
+  table: "user" | "lecture";
   type: "create" | "update" | "delete";
   data?: any;
-  id?: number;
+  id?: string;
 }) => {
   const size = type === "create" ? "w-8 h-8" : "w-7 h-7";
   const bgColor =
@@ -57,12 +51,26 @@ const FormModal = ({
   const [open, setOpen] = useState(false);
 
   const Form = () => {
-    const handleDelete = (e: React.FormEvent) => {
+    const handleDelete = async (e: React.FormEvent) => {
       e.preventDefault();
-      // Implement deletion logic here
-      console.log(`Deleting ${table} with id ${id}`);
-      // Close modal after successful deletion
-      setOpen(false);
+      try {
+        switch (table) {
+          case "lecture":
+            await apiDeleteLecture(id);
+            break;
+          case "user":
+            await apiDeleteUser(id);
+            break;
+          default:
+            break;
+        }
+        setOpen(false);
+        message.success("Delete lecture successfully !");
+        window.location.reload();
+      } catch (error) {
+        message.error("Delete lecture failed !");
+        console.error(error);
+      }
     };
 
     return type === "delete" && id ? (
@@ -81,6 +89,7 @@ const FormModal = ({
           <button
             type="submit"
             className="bg-red-700 text-white py-2 px-4 rounded-md border-none"
+            onClick={handleDelete}
           >
             Delete
           </button>
@@ -88,7 +97,7 @@ const FormModal = ({
       </form>
     ) : type === "create" || type === "update" ? (
       forms[table] ? (
-        forms[table](type, data)
+        forms[table](type, data, open, setOpen)
       ) : (
         <div>Form for {table} not yet implemented</div>
       )
