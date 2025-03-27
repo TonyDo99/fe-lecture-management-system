@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useAuthStore } from "../../store/auth";
+import { setCookie } from "@/utils/cookie";
 
 const { Title, Text, Link } = Typography;
 
