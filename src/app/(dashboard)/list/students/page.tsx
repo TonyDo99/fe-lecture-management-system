@@ -50,27 +50,29 @@ const StudentListPage = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = users.slice(indexOfFirstItem, indexOfLastItem);
 
-  const fetchUsers = async () => {
-    try {
-      const { data } = await apiGetUsers();
-      setUsers(data);
-    } catch (error) {
-      setAuth(null);
-      console.error(error);
-    }
-  };
-
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
-  if (!user) {
-    router.push("/signin");
-  }
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const { data } = await apiGetUsers();
+        setUsers(data);
+      } catch (error) {
+        setAuth(null);
+        console.error(error);
+      }
+    };
+
+    fetchUsers();
+  }, [setAuth]);
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
+    if (!user) {
+      router.push("/signin");
+    }
+  }, [user, router]); // Runs when `user` changes
 
   const renderRow = (item: IUser) => (
     <tr

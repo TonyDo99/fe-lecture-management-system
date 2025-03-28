@@ -15,16 +15,6 @@ export default function Home() {
   const [lectures, setLectures] = useState<ILecture[]>([]);
   const router = useRouter();
 
-  const fetchLectures = async () => {
-    try {
-      const { data } = await apiGetLecture();
-      setLectures(data);
-    } catch (error) {
-      router.push("/signin");
-      console.error("Error fetching courses:", error);
-    }
-  };
-
   const handleCardInfo = (lectureId: string) => {
     try {
       router.push(`/lecture/${lectureId}`);
@@ -34,8 +24,18 @@ export default function Home() {
   };
 
   useEffect(() => {
+    const fetchLectures = async () => {
+      try {
+        const { data } = await apiGetLecture();
+        setLectures(data);
+      } catch (error) {
+        router.push("/signin");
+        console.error("Error fetching courses:", error);
+      }
+    };
+
     fetchLectures();
-  }, []);
+  }, [router]);
 
   return (
     <main
