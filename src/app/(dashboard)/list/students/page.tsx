@@ -43,8 +43,6 @@ const StudentListPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [users, setUsers] = useState<IUser[]>([]);
-  const { user, setAuth } = useAuthStore();
-  const router = useRouter();
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -60,19 +58,12 @@ const StudentListPage = () => {
         const { data } = await apiGetUsers();
         setUsers(data);
       } catch (error) {
-        setAuth(null);
         console.error(error);
       }
     };
 
     fetchUsers();
-  }, [setAuth]);
-
-  useEffect(() => {
-    if (!user) {
-      router.push("/signin");
-    }
-  }, [user, router]); // Runs when `user` changes
+  }, []);
 
   const renderRow = (item: IUser) => (
     <tr

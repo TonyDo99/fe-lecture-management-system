@@ -35,8 +35,6 @@ const LessonListPage = () => {
   const [lectures, setLectures] = useState<ILecture[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const router = useRouter();
-  const { user } = useAuthStore();
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -54,11 +52,6 @@ const LessonListPage = () => {
   useEffect(() => {
     fetchLectures();
   }, []);
-
-  if (!user) {
-    router.push("/signin");
-    return;
-  }
 
   const renderRow = (item: ILecture) => (
     <tr
