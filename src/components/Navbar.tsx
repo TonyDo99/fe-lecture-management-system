@@ -1,5 +1,5 @@
+import { IUser } from "@/types";
 import Image from "next/image";
-import { IUser } from "@/store/auth";
 
 const Navbar = ({ userInfo }: { userInfo: IUser | null }) => {
   return (
