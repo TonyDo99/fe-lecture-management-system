@@ -51,13 +51,14 @@ const LessonListPage = () => {
     }
   };
 
-  if (!user) {
-    router.push("/signin");
-  }
-
   useEffect(() => {
     fetchLectures();
   }, []);
+
+  if (!user) {
+    router.push("/signin");
+    return;
+  }
 
   const renderRow = (item: ILecture) => (
     <tr
