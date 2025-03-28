@@ -92,7 +92,7 @@ const StudentListPage = () => {
       </td>
       <td className="hidden md:table-cell">{item.email}</td>
       <td className="hidden md:table-cell">
-        {moment(item.createdAt).format("YYYY-MM--DD")}
+        {moment(item.createdAt).format("YYYY-MM-DD")}
       </td>
       <td className="hidden lg:table-cell">
         {moment(item.updatedAt).format("YYYY-MM-DD")}

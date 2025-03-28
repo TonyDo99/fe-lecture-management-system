@@ -9,7 +9,7 @@ import { useState } from "react";
 const LectureForm = dynamic(() => import("./forms/LectureForm"), {
   loading: () => <h1>Loading...</h1>,
 });
-const StudentForm = dynamic(() => import("./forms/StudentForm"), {
+const UserForm = dynamic(() => import("./forms/UserForm"), {
   loading: () => <h1>Loading...</h1>,
 });
 
@@ -25,7 +25,7 @@ const forms: {
     <LectureForm type={type} data={data} open={open} setOpen={setOpen} />
   ),
   user: (type, data, open, setOpen) => (
-    <StudentForm type={type} data={data} open={open} setOpen={setOpen} />
+    <UserForm type={type} data={data} open={open} setOpen={setOpen} />
   ),
 };
 
@@ -65,10 +65,10 @@ const FormModal = ({
             break;
         }
         setOpen(false);
-        message.success("Delete lecture successfully !");
+        message.success(`Delete ${table} successfully !`);
         window.location.reload();
       } catch (error) {
-        message.error("Delete lecture failed !");
+        message.error(`Delete ${table} failed !`);
         console.error(error);
       }
     };

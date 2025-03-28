@@ -35,7 +35,7 @@ const LectureForm = ({
   const createLecture = async (formData: FormData) => {
     setLoading(true);
     try {
-      await apiUpdateLecture(data.id, formData);
+      await apiCreateLecture(formData);
       message.success("Create a lecture successfully!");
       setOpen(false);
       window.location.reload();

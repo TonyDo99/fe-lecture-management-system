@@ -4,7 +4,7 @@ import { useState } from "react";
 import { apiRegisterUser } from "@/utils/api";
 import { IUser } from "@/types";
 
-const StudentForm = ({
+const UserForm = ({
   type,
   data,
   open,
@@ -104,4 +104,4 @@ const StudentForm = ({
   );
 };
 
-export default StudentForm;
+export default UserForm;
