@@ -1,41 +1,35 @@
 import axios, { AxiosResponse } from "axios";
-import { useAuthStore } from "@/store/auth";
 import { ILecture, IUser } from "@/types";
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_URL_SERVER,
   headers: { "Content-Type": "application/json" },
+  withCredentials: true, // Add this to enable sending cookies
 });
 
 api.interceptors.request.use(
-  (config) => {
-    const token = useAuthStore.getState().token;
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
+  (config) => config,
   (error) => Promise.reject(error),
 );
 
 const apiUpload = axios.create({
   baseURL: process.env.NEXT_PUBLIC_URL_SERVER,
   headers: { "Content-Type": "multipart/form-data" },
+  withCredentials: true, // Add this to enable sending cookies
 });
 
 apiUpload.interceptors.request.use(
-  (config) => {
-    const token = useAuthStore.getState().token;
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
+  (config) => config,
   (error) => Promise.reject(error),
 );
 
 const apiGetUsers = (): Promise<AxiosResponse<IUser[]>> =>
   api.get(`${process.env.NEXT_PUBLIC_URL_SERVER}/user/list`);
+
+const apiLoginUser = (
+  values: Pick<IUser, "email" | "password">,
+): Promise<AxiosResponse<{ user: IUser }>> =>
+  api.post(`${process.env.NEXT_PUBLIC_URL_SERVER}/user/login`, values);
 
 const apiDeleteUser = (_id: string): Promise<AxiosResponse<IUser[]>> =>
   api.delete(`${process.env.NEXT_PUBLIC_URL_SERVER}/user/${_id}`);
@@ -64,14 +58,19 @@ const apiUpdateLecture = (
     formData,
   );
 
+const apiLogout = (): Promise<void> =>
+  api.post(`${process.env.NEXT_PUBLIC_URL_SERVER}/user/logout`);
+
 export {
   api,
   apiUpload,
   apiGetUsers,
   apiDeleteUser,
+  apiLoginUser,
   apiDeleteLecture,
   apiRegisterUser,
   apiCreateLecture,
   apiGetLecture,
   apiUpdateLecture,
+  apiLogout,
 };

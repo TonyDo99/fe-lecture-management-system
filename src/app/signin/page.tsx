@@ -11,11 +11,11 @@ import {
   theme,
   Typography,
 } from "antd";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useAuthStore } from "../../store/auth";
+import { apiLoginUser } from "@/utils/api";
 
 const { Title, Text, Link } = Typography;
 
@@ -39,27 +39,25 @@ export default function SignInPage() {
   const router = useRouter();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const { setAuth, user } = useAuthStore();
+  const { setUser, user } = useAuthStore();
 
-  const onFinish = (values: FieldType) => {
-    setLoading(true);
-    axios
-      .post(`${process.env.NEXT_PUBLIC_URL_SERVER}/user/login`, {
-        email: values.email,
-        password: values.password,
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          message.open({
-            type: "success",
-            content: "Login successful",
-          });
-
-          localStorage.setItem("token", response.data.token);
-          setAuth(response.data.token);
-          setLoading(false);
-        }
+  const onFinish = async (values: FieldType) => {
+    try {
+      setLoading(true);
+      const { data } = await apiLoginUser({
+        email: values?.email || "",
+        password: values?.password || "",
       });
+
+      if (data.user) {
+        message.success("Login successfully!");
+        setUser(user);
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      message.success("Login unsuccessfully!");
+    }
   };
 
   const onFinishFailed = (errorInfo: any) => {

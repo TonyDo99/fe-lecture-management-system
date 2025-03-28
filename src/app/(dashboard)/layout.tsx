@@ -10,12 +10,11 @@ export default function DashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { user, setAuth } = useAuthStore();
+  const { user, setUser } = useAuthStore();
 
   const handleSignOut = (url: string) => {
     if (url.includes("signin")) {
-      localStorage.clear();
-      setAuth(null);
+      setUser(null);
     }
   };
 
