@@ -60,10 +60,6 @@ export default function SignInPage() {
     }
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
-
   useEffect(() => {
     if (user?.role === "admin") {
       router.push("/list/lessons");
@@ -71,6 +67,10 @@ export default function SignInPage() {
       router.push("/");
     }
   }, [router, user]);
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log("Failed:", errorInfo);
+  };
 
   return (
     <Row style={{ minHeight: isMobile ? "auto" : "100vh", overflow: "hidden" }}>

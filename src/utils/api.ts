@@ -66,9 +66,6 @@ const apiUpdateLecture = (
     formData,
   );
 
-const apiLogout = (): Promise<void> =>
-  api.post(`${process.env.NEXT_PUBLIC_URL_SERVER}/user/logout`);
-
 export {
   api,
   apiUpload,
@@ -81,5 +78,4 @@ export {
   apiCreateLecture,
   apiGetLecture,
   apiUpdateLecture,
-  apiLogout,
 };
