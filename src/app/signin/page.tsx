@@ -53,20 +53,18 @@ export default function SignInPage() {
         message.success("Login successfully!");
         setUser(data.user);
         setLoading(false);
+
+        if (data?.user.role === "admin") {
+          router.push("/list/lessons");
+        } else if (data?.user.role === "user") {
+          router.push("/");
+        }
       }
     } catch (error) {
       setLoading(false);
       message.error("Login unsuccessfully!");
     }
   };
-
-  useEffect(() => {
-    if (user?.role === "admin") {
-      router.push("/list/lessons");
-    } else if (user?.role === "user") {
-      router.push("/");
-    }
-  }, [router, user]);
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
