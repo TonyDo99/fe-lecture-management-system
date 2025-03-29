@@ -52,15 +52,6 @@ export default function SignInPage() {
       if (data.user) {
         message.success("Login successfully!");
         setUser(data.user);
-
-        setTimeout(() => {
-          if (data.user?.role === "admin") {
-            router.push("/list/lessons");
-          } else if (data.user?.role === "user") {
-            router.push("/");
-          }
-        }, 2000);
-
         setLoading(false);
       }
     } catch (error) {
@@ -68,6 +59,14 @@ export default function SignInPage() {
       message.error("Login unsuccessfully!");
     }
   };
+
+  useEffect(() => {
+    if (user?.role === "admin") {
+      router.push("/list/lessons");
+    } else if (user?.role === "user") {
+      router.push("/");
+    }
+  }, [router, user]);
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
