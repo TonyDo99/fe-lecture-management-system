@@ -52,6 +52,15 @@ export default function SignInPage() {
       if (data.user) {
         message.success("Login successfully!");
         setUser(data.user);
+
+        setTimeout(() => {
+          if (data.user?.role === "admin") {
+            router.push("/list/lessons");
+          } else if (data.user?.role === "user") {
+            router.push("/");
+          }
+        }, 2000);
+
         setLoading(false);
       }
     } catch (error) {
@@ -63,15 +72,6 @@ export default function SignInPage() {
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
-
-  useEffect(() => {
-    if (user?.role === "admin") {
-      console.log("Is admin");
-      router.replace("/list/lessons");
-    } else if (user?.role === "user") {
-      router.replace("/");
-    }
-  }, [router, user]); // ✅ Ensures it runs when `user` updates
   return (
     <Row style={{ minHeight: isMobile ? "auto" : "100vh", overflow: "hidden" }}>
       <Col xs={24} lg={12}>

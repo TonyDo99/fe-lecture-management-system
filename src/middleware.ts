@@ -1,7 +1,8 @@
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(req: NextRequest, res: NextResponse) {
-  const token = req.cookies.get("token")?.value;
+  const token = cookies().get("token")?.value;
 
   if (!token) {
     return NextResponse.redirect(new URL("/signin", req.url));
