@@ -39,6 +39,12 @@ const apiRegisteUser = (
 ): Promise<AxiosResponse<IUser>> =>
   api.post(`${process.env.NEXT_PUBLIC_URL_SERVER}/user/register`, values);
 
+const apiUpdateUser = (
+  _id: string,
+  values: Pick<IUser, "name" | "password">,
+): Promise<AxiosResponse<IUser>> =>
+  api.patch(`${process.env.NEXT_PUBLIC_URL_SERVER}/user/${_id}`, values);
+
 const apiDeleteLecture = (_id: string): Promise<void> =>
   api.delete(`${process.env.NEXT_PUBLIC_URL_SERVER}/lecture/${_id}`);
 
@@ -73,6 +79,7 @@ export {
   apiDeleteUser,
   apiLoginUser,
   apiRegisteUser,
+  apiUpdateUser,
   apiDeleteLecture,
   apiRegisterUser,
   apiCreateLecture,

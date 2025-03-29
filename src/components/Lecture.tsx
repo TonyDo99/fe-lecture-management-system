@@ -1,7 +1,12 @@
 "use client";
 import Image from "next/image";
 import { Button, Card, Flex, Tooltip, Typography } from "antd";
-import { PlayCircleTwoTone } from "@ant-design/icons";
+import {
+  EditOutlined,
+  EllipsisOutlined,
+  PlayCircleTwoTone,
+  SettingOutlined,
+} from "@ant-design/icons";
 import { ILecture } from "@/types";
 
 const { Meta } = Card;
@@ -13,7 +18,7 @@ export interface ILectureProps {
 
 const Lecture: React.FC<ILectureProps> = ({ lecture, onNavigate }) => (
   <Card
-    hoverable
+    onClick={() => onNavigate(lecture._id)}
     style={{
       width: 300,
       height: 200,
@@ -23,10 +28,12 @@ const Lecture: React.FC<ILectureProps> = ({ lecture, onNavigate }) => (
         alt="example"
         width={240}
         height={400}
-        src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
+        src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
       />
     }
     actions={[
+      <SettingOutlined disabled key="setting" />,
+      <EditOutlined disabled key="edit" />,
       <Tooltip title="Play" key="Play video">
         <PlayCircleTwoTone
           style={{ fontSize: 23 }}
