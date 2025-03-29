@@ -1,7 +1,7 @@
 "use client";
 import Lecture from "@/components/Lecture";
 import { GeistSans } from "geist/font/sans";
-import { Avatar, Modal, Space, Typography } from "antd";
+import { Avatar, Col, Modal, Row, Space, Typography } from "antd";
 import { GeistMono } from "geist/font/mono";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -81,13 +81,17 @@ export default function Home() {
 
       <div className="mt-20">
         <Title level={2}>Your lectures</Title>
-        {lectures.map((lecture: ILecture) => (
-          <Lecture
-            key={lecture._id}
-            lecture={lecture}
-            onNavigate={handleCardInfo}
-          />
-        ))}
+        <Row className="gap-y-48" gutter={8} wrap>
+          {lectures.map((lecture: ILecture) => (
+            <Col key={lecture._id} xs={24} sm={12} xl={6}>
+              <Lecture
+                key={lecture._id}
+                lecture={lecture}
+                onNavigate={handleCardInfo}
+              />
+            </Col>
+          ))}
+        </Row>
       </div>
       <Modal
         centered

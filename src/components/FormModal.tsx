@@ -66,6 +66,7 @@ const FormModal = ({
         }
         setOpen(false);
         message.success(`Delete ${table} successfully !`);
+        window.location.reload();
       } catch (error) {
         message.error(`Delete ${table} failed !`);
         console.error(error);

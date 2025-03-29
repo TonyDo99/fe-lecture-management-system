@@ -14,11 +14,35 @@ pnpm dev
 bun dev
 ```
 
+## Environment Variables
+NEXT_PUBLIC_URL_SERVER=http://localhost:8000/api/v1
+JWT_SECRET=3e293f31f1427926b789b4c399f4eee016ee950c
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+
+## Project Structure
+
+```
+.
+├── app/
+│   ├── page.tsx             # Main page component
+│   └── layout.tsx           # Root layout component
+├── public/                  # Static assets
+└── package.json            # Project dependencies and scripts
+```
+
+## Features
+
+- Next.js 13 App Router
+- TypeScript
+- Tailwind CSS
+- ESLint & Prettier configuration
+- Automatic font optimization
+- Static asset handling
 
 ## Learn More
 

@@ -24,6 +24,7 @@ const LectureForm = ({
       await apiUpdateLecture(data._id, formData);
       message.success("Update a lecture successfully!");
       setOpen(false);
+      window.location.reload();
     } catch (error) {
       console.error(error);
     } finally {
@@ -37,6 +38,7 @@ const LectureForm = ({
       await apiCreateLecture(formData);
       message.success("Create a lecture successfully!");
       setOpen(false);
+      window.location.reload();
     } catch (error) {
       console.error(error);
     } finally {
