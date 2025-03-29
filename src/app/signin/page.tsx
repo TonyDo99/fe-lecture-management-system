@@ -52,7 +52,6 @@ export default function SignInPage() {
       if (data.user) {
         message.success("Login successfully!");
         setUser(data.user);
-        console.log("State set successfilly");
         setLoading(false);
       }
     } catch (error) {
@@ -65,13 +64,12 @@ export default function SignInPage() {
     console.log("Failed:", errorInfo);
   };
 
-  // ✅ Move redirect to `useEffect`
   useEffect(() => {
-    console.log("User login", user);
     if (user?.role === "admin") {
-      router.push("/list/lessons");
+      console.log("Is admin");
+      router.replace("/list/lessons");
     } else if (user?.role === "user") {
-      router.push("/");
+      router.replace("/");
     }
   }, [router, user]); // ✅ Ensures it runs when `user` updates
   return (
