@@ -1,7 +1,7 @@
 "use client";
 import { Form, Input, Select, Button, message } from "antd";
 import { useState } from "react";
-import { apiRegisterUser, apiRegisteUser, apiUpdateUser } from "@/utils/api";
+import { apiRegisterUser, apiUpdateUser } from "@/utils/api";
 import { IUser } from "@/types";
 
 const UserForm = ({
