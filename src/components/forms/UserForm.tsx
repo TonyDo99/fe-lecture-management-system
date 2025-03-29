@@ -7,13 +7,13 @@ import { IUser } from "@/types";
 const UserForm = ({
   type,
   data,
-  open,
+  open = false,
   setOpen,
 }: {
   type: "create" | "update";
   data?: any;
   open: boolean;
-  setOpen: (open: boolean) => void;
+  setOpen?: (open: boolean) => void;
 }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ const UserForm = ({
     try {
       await apiRegisterUser(values);
       message.success("Create a user account successfully!");
-      setOpen(false);
+      setOpen?.(false);
     } catch (error) {
       console.error(error);
     } finally {

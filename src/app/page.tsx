@@ -1,13 +1,14 @@
 "use client";
 import Lecture from "@/components/Lecture";
 import { GeistSans } from "geist/font/sans";
-import { Typography } from "antd";
+import { Avatar, Space, Typography } from "antd";
 import { GeistMono } from "geist/font/mono";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { apiGetLecture } from "@/utils/api";
 import { ILecture } from "@/types";
+import UserForm from "@/components/forms/UserForm";
 
 const { Title } = Typography;
 
@@ -53,11 +54,18 @@ export default function Home() {
             </a>
           </div>
           <div className="flex gap-4 lg:ml-auto">
-            <Link href="/signin">
-              <button className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2">
-                Signup
-              </button>
-            </Link>
+            <Space size={16} wrap>
+              <Avatar
+                src="https://images.pexels.com/photos/2888150/pexels-photo-2888150.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                alt="avatar"
+                size={40}
+              />
+              <Link href="/signin">
+                <button className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2">
+                  Signup
+                </button>
+              </Link>
+            </Space>
           </div>
         </div>
       </nav>
@@ -72,6 +80,7 @@ export default function Home() {
           />
         ))}
       </div>
+      {/* <UserForm type="update" data={[]} open={true} setOpen={() => {}} /> */}
     </main>
   );
 }
