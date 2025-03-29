@@ -61,12 +61,14 @@ export default function SignInPage() {
   };
 
   useEffect(() => {
-    if (user?.role === "admin") {
+    if (!user) return;
+
+    if (user.role === "admin") {
       router.push("/list/lessons");
-    } else if (user?.role === "user") {
+    } else {
       router.push("/");
     }
-  }, [router, user]);
+  }, [user]);
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
