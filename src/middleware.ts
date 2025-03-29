@@ -8,10 +8,6 @@ export function middleware(req: NextRequest, res: NextResponse) {
     return NextResponse.redirect(new URL("/signin", req.url));
   }
 
-  if (req.nextUrl.pathname === "signin") {
-    res.cookies.delete("token");
-  }
-
   return NextResponse.next();
 }
 

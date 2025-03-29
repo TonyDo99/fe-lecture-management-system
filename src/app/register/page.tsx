@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useAuthStore } from "../../store/auth";
-import { apiLoginUser, apiRegisteUser } from "@/utils/api";
+import { apiLoginUser, apiRegisterUser } from "@/utils/api";
 
 const { Title, Text, Link } = Typography;
 
@@ -33,7 +33,7 @@ const initalFieldValue: FieldType = {
   remember: false,
 };
 
-export default function SignInPage() {
+function RegisterPage() {
   const {
     token: { colorPrimary },
   } = theme.useToken();
@@ -46,7 +46,7 @@ export default function SignInPage() {
   const onFinish = async (values: FieldType) => {
     try {
       setLoading(true);
-      const { data } = await apiRegisteUser(values);
+      const { data } = await apiRegisterUser(values);
 
       if (data) {
         message.success("Register successfully!");
@@ -170,3 +170,4 @@ export default function SignInPage() {
     </Row>
   );
 }
+export default RegisterPage;
