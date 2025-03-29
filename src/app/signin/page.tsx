@@ -109,7 +109,7 @@ export default function SignInPage() {
           <Title className="m-0">Login</Title>
           <Flex gap={4}>
             <Text>Dont have an account?</Text>
-            <Link href="/">Create an account here</Link>
+            <Link href="/register">Create an account here</Link>
           </Flex>
           <Form
             form={form}

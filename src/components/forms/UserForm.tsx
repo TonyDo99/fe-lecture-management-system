@@ -1,7 +1,7 @@
 "use client";
 import { Form, Input, Select, Button, message } from "antd";
 import { useState } from "react";
-import { apiRegisterUser } from "@/utils/api";
+import { apiRegisterUser, apiRegisteUser, apiUpdateUser } from "@/utils/api";
 import { IUser } from "@/types";
 
 const UserForm = ({
@@ -21,8 +21,12 @@ const UserForm = ({
   const onFinish = async (values: IUser) => {
     setLoading(true);
     try {
-      await apiRegisterUser(values);
-      message.success("Create a user account successfully!");
+      if (type === "create") {
+        await apiRegisterUser(values);
+      } else if (type === "update") {
+        await apiUpdateUser(data.id, values);
+        message.success("Update a information successfully!");
+      }
       setOpen?.(false);
     } catch (error) {
       console.error(error);
@@ -40,7 +44,7 @@ const UserForm = ({
         className="max-w-[600px] w-full mx-auto px-4 sm:px-6 lg:p-8"
       >
         <h1 className="text-xl md:text-2xl font-semibold mb-2">
-          Create a user
+          {type === "create" ? "Create a user account" : "Update user account"}
         </h1>
         <div className="text-xs md:text-sm text-gray-400 font-medium mb-6">
           Personal Information
@@ -55,8 +59,8 @@ const UserForm = ({
         >
           <Input className="w-full" />
         </Form.Item>
-
         <Form.Item
+          hidden={type === "update"}
           label="Email"
           name="email"
           rules={[
@@ -77,8 +81,8 @@ const UserForm = ({
         >
           <Input.Password className="w-full" />
         </Form.Item>
-
         <Form.Item
+          hidden={type === "update"}
           label="Role"
           name="role"
           rules={[{ required: true, message: "Role is required!" }]}

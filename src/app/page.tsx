@@ -1,7 +1,7 @@
 "use client";
 import Lecture from "@/components/Lecture";
 import { GeistSans } from "geist/font/sans";
-import { Avatar, Space, Typography } from "antd";
+import { Avatar, Modal, Space, Typography } from "antd";
 import { GeistMono } from "geist/font/mono";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -9,11 +9,14 @@ import { useEffect, useState } from "react";
 import { apiGetLecture } from "@/utils/api";
 import { ILecture } from "@/types";
 import UserForm from "@/components/forms/UserForm";
+import { useAuthStore } from "@/store/auth";
 
 const { Title } = Typography;
 
 export default function Home() {
   const [lectures, setLectures] = useState<ILecture[]>([]);
+  const [openModal, setOpenModal] = useState(false);
+  const { user } = useAuthStore();
   const router = useRouter();
 
   const handleCardInfo = (lectureId: string) => {
@@ -40,7 +43,7 @@ export default function Home() {
 
   return (
     <main
-      className={`${GeistSans.className} bg-color-primary h-screen w-full px-4 lg:px-40 py-4 border-b gap-8`}
+      className={`${GeistSans.className} h-screen w-full px-4 lg:px-40 py-4 border-b gap-8`}
     >
       <nav>
         <div className="flex w-full px-4 lg:px-40 py-4 items-center border-b text-center gap-8 justify-between">
@@ -55,11 +58,17 @@ export default function Home() {
           </div>
           <div className="flex gap-4 lg:ml-auto">
             <Space size={16} wrap>
-              <Avatar
-                src="https://images.pexels.com/photos/2888150/pexels-photo-2888150.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                alt="avatar"
-                size={40}
-              />
+              <div
+                className="cursor-pointer"
+                onClick={() => setOpenModal(true)}
+              >
+                <Avatar
+                  src="https://images.pexels.com/photos/2888150/pexels-photo-2888150.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                  alt="avatar"
+                  size={40}
+                />
+              </div>
+
               <Link href="/signin">
                 <button className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2">
                   Signup
@@ -80,7 +89,19 @@ export default function Home() {
           />
         ))}
       </div>
-      {/* <UserForm type="update" data={[]} open={true} setOpen={() => {}} /> */}
+      <Modal
+        centered
+        open={openModal}
+        onCancel={() => setOpenModal(false)}
+        footer={false}
+      >
+        <UserForm
+          type="update"
+          data={user}
+          open={openModal}
+          setOpen={setOpenModal}
+        />
+      </Modal>
     </main>
   );
 }

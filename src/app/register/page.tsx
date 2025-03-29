@@ -44,14 +44,13 @@ export default function SignInPage() {
   const { setUser, user } = useAuthStore();
 
   const onFinish = async (values: FieldType) => {
-    console.log("Values", values);
     try {
       setLoading(true);
       const { data } = await apiRegisteUser(values);
 
       if (data) {
         message.success("Register successfully!");
-        setUser(user);
+        setUser(data);
         setLoading(false);
       }
     } catch (error) {
