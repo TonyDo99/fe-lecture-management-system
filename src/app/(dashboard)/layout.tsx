@@ -29,7 +29,7 @@ export default function DashboardLayout({
           <Image src="/logo.png" alt="logo" width={32} height={32} />
           <span className="hidden lg:block font-bold">SchooLama</span>
         </Link>
-        <Menu onNavigate={handleSignOut} role={user?.role || ""} />
+        <Menu onNavigate={handleSignOut} role={"admin"} />
       </div>
       {/* RIGHT */}
       <div className="w-[86%] md:w-[92%] lg:w-[84%] xl:w-[86%] bg-[#F7F8FA] overflow-scroll flex flex-col">

@@ -1,7 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { NextRouter, useRouter } from "next/router";
-import { useEffect } from "react";
 
 const menuItems = [
   {
@@ -30,13 +28,6 @@ const menuItems = [
   {
     title: "OTHER",
     items: [
-      {
-        icon: "/profile.png",
-        label: "Profile",
-        href: "/profile",
-        visible: ["admin", "user"],
-        onClick: () => {},
-      },
       {
         icon: "/logout.png",
         label: "Logout",
