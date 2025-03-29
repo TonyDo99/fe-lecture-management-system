@@ -15,18 +15,20 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useAuthStore } from "../../store/auth";
-import { apiLoginUser } from "@/utils/api";
+import { apiLoginUser, apiRegisteUser } from "@/utils/api";
 
 const { Title, Text, Link } = Typography;
 
 type FieldType = {
-  email?: string;
-  password?: string;
-  remember?: boolean;
+  email: string;
+  name: string;
+  password: string;
+  remember: boolean;
 };
 
 const initalFieldValue: FieldType = {
   email: "",
+  name: "",
   password: "",
   remember: false,
 };
@@ -42,33 +44,28 @@ export default function SignInPage() {
   const { setUser, user } = useAuthStore();
 
   const onFinish = async (values: FieldType) => {
+    console.log("Values", values);
     try {
       setLoading(true);
-      const { data } = await apiLoginUser({
-        email: values?.email || "",
-        password: values?.password || "",
-      });
+      const { data } = await apiRegisteUser(values);
 
-      if (data.user) {
-        message.success("Login successfully!");
-        setUser(data.user);
+      if (data) {
+        message.success("Register successfully!");
+        setUser(user);
         setLoading(false);
       }
     } catch (error) {
+      console.error(error);
       setLoading(false);
-      message.error("Login unsuccessfully!");
+      message.error(
+        "Register unsuccessfully!. Account might be already registered",
+      );
     }
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
-
   useEffect(() => {
-    if (user?.role === "admin") {
-      router.push("/list/lessons");
-    } else if (user?.role === "user") {
-      router.push("/");
+    if (user) {
+      router.push("/signin");
     }
   }, [router, user]);
 
@@ -83,14 +80,13 @@ export default function SignInPage() {
           className="text-center"
           style={{ background: colorPrimary, height: "100%", padding: "1rem" }}
         >
-          {/* <Logo color="white" /> */}
           <Text
             className="text-white"
             style={{
               fontSize: 35,
             }}
           >
-            Welcome back to KR Academy
+            Welcome to KR Academy
           </Text>
           <Text className="text-white" style={{ fontSize: 20 }}>
             All the skills you need in one place From critical skills to
@@ -106,24 +102,34 @@ export default function SignInPage() {
           gap="middle"
           style={{ height: "100%", padding: "2rem" }}
         >
-          <Title className="m-0">Login</Title>
-          <Flex gap={4}>
-            <Text>Dont have an account?</Text>
-            <Link href="/">Create an account here</Link>
-          </Flex>
+          <Title className="m-0">Register</Title>
           <Form
             form={form}
-            name="sign-in-form"
+            name="sign-up-form"
             layout="vertical"
             labelCol={{ span: 24 }}
             wrapperCol={{ span: 24 }}
             initialValues={initalFieldValue}
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
             autoComplete="off"
             requiredMark={false}
           >
             <Row gutter={[8, 0]}>
+              <Col xs={24}>
+                <Form.Item<FieldType>
+                  label="Name"
+                  name="name"
+                  rules={[
+                    { required: true, message: "Please input your name" },
+                    {
+                      max: 50,
+                      message: "Name should not exceed 50 characters",
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
               <Col xs={24}>
                 <Form.Item<FieldType>
                   label="Email"
@@ -146,11 +152,6 @@ export default function SignInPage() {
                   <Input.Password />
                 </Form.Item>
               </Col>
-              <Col xs={24}>
-                <Form.Item<FieldType> name="remember" valuePropName="checked">
-                  <Checkbox>Remember me</Checkbox>
-                </Form.Item>
-              </Col>
             </Row>
             <Form.Item>
               <Flex align="center" justify="space-between">
@@ -160,9 +161,8 @@ export default function SignInPage() {
                   size="middle"
                   loading={loading}
                 >
-                  Sign in
+                  Register
                 </Button>
-                <Link href="/">Forgot password?</Link>
               </Flex>
             </Form.Item>
           </Form>

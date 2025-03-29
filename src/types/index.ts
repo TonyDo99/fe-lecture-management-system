@@ -14,7 +14,6 @@ export interface ILecture extends AbstractProperties {
 export interface IUser extends AbstractProperties {
   _id: string;
   password: string;
-  photo: string;
   email: string;
   name: string;
   role: "user" | "admin";

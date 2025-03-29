@@ -3,14 +3,13 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role, studentsData } from "@/lib/data";
+import { studentsData } from "@/lib/data";
 import { useAuthStore } from "@/store/auth";
 import { IUser } from "@/types";
 import { apiGetUsers } from "@/utils/api";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const columns = [
@@ -43,6 +42,7 @@ const StudentListPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [users, setUsers] = useState<IUser[]>([]);
+  const { user } = useAuthStore();
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -73,7 +73,7 @@ const StudentListPage = () => {
       <td className="flex items-center gap-4 p-4">
         <Image
           src="https://images.pexels.com/photos/2888150/pexels-photo-2888150.jpeg?auto=compress&cs=tinysrgb&w=1200"
-          alt=""
+          alt="avatar"
           width={40}
           height={40}
           className="md:hidden xl:block w-10 h-10 rounded-full object-cover"
@@ -97,7 +97,7 @@ const StudentListPage = () => {
               <Image src="/view.png" alt="" width={16} height={16} />
             </button>
           </Link>
-          {role === "admin" && (
+          {user?.role === "admin" && (
             <FormModal table="user" type="delete" id={item._id} />
           )}
         </div>
@@ -119,12 +119,7 @@ const StudentListPage = () => {
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
               <Image src="/sort.png" alt="" width={14} height={14} />
             </button>
-            {role === "admin" && (
-              // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
-              //   <Image src="/plus.png" alt="" width={14} height={14} />
-              // </button>
-              <FormModal table="user" type="create" />
-            )}
+            {user?.role === "admin" && <FormModal table="user" type="create" />}
           </div>
         </div>
       </div>
